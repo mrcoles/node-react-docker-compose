@@ -1,13 +1,22 @@
-FROM node:8.9.3
 
 # Setup and build the client
+
+FROM node:8.9.3-alpine as client
+
 WORKDIR /usr/app/client/
 COPY client/package*.json ./
 RUN npm install -qy
 COPY client/ ./
 RUN npm run build
 
-# Setup server
+
+# Setup the server
+
+FROM node:8.9.3-alpine
+
+WORKDIR /usr/app/
+COPY --from=client /usr/app/client/build/ ./client/build/
+
 WORKDIR /usr/app/server/
 COPY server/package*.json ./
 RUN npm install -qy
