@@ -10,7 +10,8 @@ services:
     ports:
       - "8080:8080"
     environment:
-      NODE_ENV: development
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
   client:
     build:
       context: ./client/
@@ -22,3 +23,5 @@ services:
       - server
     ports:
       - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
