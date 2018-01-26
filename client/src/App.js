@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './compiled/App.css';
 
 class App extends Component {
   constructor() {
@@ -16,19 +16,17 @@ class App extends Component {
   }
 
   callApi = async () => {
-    console.log('[FETCH]'); //REM
     const resp = await fetch('/api');
 
     window._resp = resp;
 
     let text = await resp.text();
-    console.log('[FETCH] TEXT', text); //REM
 
     let data = null;
     try {
       data = JSON.parse(text); // cannot call both .json and .text - await resp.json();
     } catch (e) {
-      console.log('No json!'); //REM
+      console.err(`Invalid json\n${e}`);
     }
 
     if (resp.status !== 200) {
