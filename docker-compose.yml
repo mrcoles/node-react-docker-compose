@@ -9,6 +9,7 @@ services:
       - /usr/app/node_modules
     ports:
       - "8080:8080"
+    # env_file: ./server/.env # TODO - uncomment this to auto-load your .env file!
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true

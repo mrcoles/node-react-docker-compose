@@ -5,6 +5,7 @@ services:
     ports:
       - "80:8000"
     restart: always
+    # env_file: ./server/.env # TODO - uncomment this to auto-load your .env file!
     environment:
       NODE_ENV: production
       PORT: 8000
