@@ -1,0 +1,10 @@
+defaultEntryPoints = ["http"]
+logLevel = "INFO"
+
+[docker]
+  endpoint = "unix:///var/run/docker.sock"
+  exposedByDefault = false
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
