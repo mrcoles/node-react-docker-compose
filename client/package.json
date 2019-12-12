@@ -8,10 +8,14 @@
     "react-scripts": "^3.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm-run-all build-css build-js",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-css": "sass --load-path ./src --load-path ./node_modules src/components/:src/assets/components/",
+    "watch-css": "sass --load-path ./src --load-path ./node_modules src/components/:src/assets/components/ --watch",
+    "start-js": "react-scripts start",
+    "build-js": "react-scripts build"
   },
   "proxy": "http://server:8080",
   "browserslist": {
@@ -25,5 +29,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "npm-run-all": "^4.1.5",
+    "sass": "^1.23.7"
   }
 }
