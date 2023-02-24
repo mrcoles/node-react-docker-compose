@@ -23,4 +23,4 @@ services:
     depends_on:
       - server
     ports:
-      - "3000:3000"
+      - "3001:3000"

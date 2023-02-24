@@ -7,7 +7,7 @@ const TrumpCards = () => {
     const [users, setUsers] = useState([
         { id: 0, first_name: "Devansh", last_name: "Mittal", role: "Senior Designer", company: "Web Products", location: "London,UK", image_url: "https://iili.io/HcpI6EQ.jpg" },
         { id: 1, first_name: "Johannes", last_name: "Breulmann", role: "Product Lead", company: "DACH Group", location: "Berlin,DE", image_url: "https://iili.io/HcpAqBf.jpg" },
-        { id: 2, first_name: "Joshua", last_name: "Gann", role: "Software Engineer", company: "Playform Team", location: "London,UK", image_url: "https://iili.io/HcpISTu.jpg" },
+        { id: 2, first_name: "Joshua", last_name: "Gann", role: "Software Engindeer", company: "Playform Team", location: "London,UK", image_url: "https://iili.io/HcpISTu.jpg" },
     ]);
 
     //geenrate a ramdom number save it to a variable then use that variable to get the user from the array
