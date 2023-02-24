@@ -6,7 +6,7 @@ import { useState } from "react";
 const TrumpCards = () => {
     const [users, setUsers] = useState([
         { id: 0, first_name: "Devansh", last_name: "Mittal", role: "Senior Designer", company: "Web Products", location: "London,UK", image_url: "https://iili.io/HcpI6EQ.jpg" },
-        { id: 1, first_name: "Johannes", last_name: "Breulmann", role: "Product Lead", company: "DACH Group", location: "Berlin,DE", image_url: "https://iili.io/HcpAqBf.jpg" },
+        { id: 1, first_name: "Joghhannes", last_name: "Breulmann", role: "Product Lead", company: "DACH Group", location: "Berlin,DE", image_url: "https://iili.io/HcpAqBf.jpg" },
         { id: 2, first_name: "Joshua", last_name: "Gann", role: "Software Engindeer", company: "Playform Team", location: "London,UK", image_url: "https://iili.io/HcpISTu.jpg" },
     ]);
 
@@ -42,7 +42,7 @@ const TrumpCards = () => {
                 <div className="trump-card__image">
                     <img src={user.image_url} alt="user" />
                 </div>
-                <div className="trump-card__info">
+                <div className="trump-card__info add stuff">
                     <h2>{user.first_name} {user.last_name}</h2>
                     <p>{user.role}</p>
                     <p>{user.company}</p>
