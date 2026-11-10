@@ -13,6 +13,7 @@ This repo was originally built on create-react-app and Node 12. It has since bee
 - **Sass is compiled by Vite.** Import `.scss` files directly from components; no separate watch step or restart is needed for new files.
 - **Express 5.** The catch-all route that returns the React app uses Express 5 path syntax (`'{/*splat}'`); a bare `'*'` no longer works.
 - **Node 26** in every image (was Node 12 for the dev containers and Node 9 for the production build). Dockerfiles use `npm ci`.
+- **`node --watch` instead of nodemon.** The dev server runs `npm run dev` (`node --watch-path=src src/index.js`), Node's built-in watch mode, so nodemon is no longer a dependency.
 - **No file polling by default.** Native file-change events now cross Docker bind mounts on macOS, so `CHOKIDAR_USEPOLLING` was removed (see [File watching](#file-watching) if reloads don't fire).
 - **Docker Compose v2.** Commands are `docker compose` (not `docker-compose`), and the obsolete `version:` key is gone from the compose files.
 
@@ -24,7 +25,7 @@ docker compose up
 
 For development, the `server/` and `client/` directories have their own docker containers, which are configured via the `docker-compose.yml` file.
 
-The client (Vite dev server) is spun up at `localhost:3000` and proxies `/api` to the server using the linked name `server:8080` (see `client/vite.config.js`). The server runs under nodemon and restarts on changes.
+The client (Vite dev server) is spun up at `localhost:3000` and proxies `/api` to the server using the linked name `server:8080` (see `client/vite.config.js`). The server runs `npm run dev`, which uses Node's built-in watch mode to restart on any change under `server/src/` (to restart it by hand, run `docker compose restart server`).
 
 The local directories are mounted into the containers, so changes will reflect immediately. However, changes to `package.json` need a rebuild:
 
@@ -36,12 +37,10 @@ The `down` matters: `node_modules` lives in an anonymous volume, so without it (
 
 ### File watching
 
-Vite and nodemon rely on native file-change events, which reach the containers on Linux and on current Docker Desktop for Mac (VirtioFS file sharing). If edits don't trigger reloads, for example on Windows with the repo on the Windows filesystem (`/mnt/c/...` under WSL2) or an old Docker Desktop using osxfs, turn on polling:
+Vite and `node --watch` rely on native file-change events, which reach the containers on Linux and on current Docker Desktop for Mac (VirtioFS file sharing). If edits don't trigger reloads, for example on Windows with the repo on the Windows filesystem (`/mnt/c/...` under WSL2) or an old Docker Desktop using osxfs, the best fix is to move the repo somewhere native events work (on Windows, inside the WSL filesystem). Otherwise, fall back to polling:
 
 - **Client:** in `client/vite.config.js`, add `watch: { usePolling: true }` under `server`.
-- **Server:** in `docker-compose.yml`, add `CHOKIDAR_USEPOLLING=true` to the server's `environment` (or add `--legacy-watch` to the nodemon command).
-
-Better still on Windows, keep the repo inside the WSL filesystem, where native events work.
+- **Server:** `node --watch` has no polling mode, so change the server's `command` in `docker-compose.yml` to `npx nodemon --legacy-watch src/index.js`.
 
 ### Environment variables
 
