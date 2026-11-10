@@ -1,9 +1,9 @@
-FROM node:12.10.0-alpine
+FROM node:26-alpine
 
 WORKDIR /usr/app
 
 COPY package*.json ./
-RUN npm ci -qy
+RUN npm ci
 
 COPY . .
 
