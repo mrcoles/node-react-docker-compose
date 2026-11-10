@@ -13,6 +13,7 @@ This repo was originally built on create-react-app and Node 12. It has since bee
 - **Sass is compiled by Vite.** Import `.scss` files directly from components; no separate watch step or restart is needed for new files.
 - **Express 5.** The catch-all route that returns the React app uses Express 5 path syntax (`'{/*splat}'`); a bare `'*'` no longer works.
 - **Node 26** in every image (was Node 12 for the dev containers and Node 9 for the production build). Dockerfiles use `npm ci`.
+- **No file polling by default.** Native file-change events now cross Docker bind mounts on macOS, so `CHOKIDAR_USEPOLLING` was removed (see [File watching](#file-watching) if reloads don't fire).
 - **Docker Compose v2.** Commands are `docker compose` (not `docker-compose`), and the obsolete `version:` key is gone from the compose files.
 
 ## Development
@@ -25,13 +26,24 @@ For development, the `server/` and `client/` directories have their own docker c
 
 The client (Vite dev server) is spun up at `localhost:3000` and proxies `/api` to the server using the linked name `server:8080` (see `client/vite.config.js`). The server runs under nodemon and restarts on changes.
 
-The local directories are mounted into the containers, so changes will reflect immediately (both containers use file polling, since file events don't reliably cross the Docker bind mount on macOS). However, changes to `package.json` need a rebuild:
+The local directories are mounted into the containers, so changes will reflect immediately. However, changes to `package.json` need a rebuild:
 
 ```bash
 docker compose down && docker compose build && docker compose up
 ```
 
 The `down` matters: `node_modules` lives in an anonymous volume, so without it (or `docker compose up --renew-anon-volumes`) the container keeps the old packages.
+
+### File watching
+
+Vite and nodemon rely on native file-change events, which reach the containers on Linux and on current Docker Desktop for Mac (VirtioFS file sharing). If edits don't trigger reloads, for example on Windows with the repo on the Windows filesystem (`/mnt/c/...` under WSL2) or an old Docker Desktop using osxfs, turn on polling:
+
+- **Client:** in `client/vite.config.js`, add `watch: { usePolling: true }` under `server`.
+- **Server:** in `docker-compose.yml`, add `CHOKIDAR_USEPOLLING=true` to the server's `environment` (or add `--legacy-watch` to the nodemon command).
+
+Better still on Windows, keep the repo inside the WSL filesystem, where native events work.
+
+### Environment variables
 
 To load environment variables from `server/.env`, uncomment the `env_file` line in `docker-compose.yml` (and `docker-compose.prod.yml`). `server/.env` is gitignored.
 

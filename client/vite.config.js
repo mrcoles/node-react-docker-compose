@@ -15,9 +15,5 @@ export default defineConfig({
       // the `server` container from docker-compose.yml
       '/api': 'http://server:8080',
     },
-    watch: {
-      // file events don't reliably cross the Docker bind mount on macOS
-      usePolling: true,
-    },
   },
 });
