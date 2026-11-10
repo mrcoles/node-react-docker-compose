@@ -17,17 +17,17 @@ app.use(express.static(CLIENT_BUILD_PATH));
 
 // API
 app.get('/api', (req, res) => {
-  res.set('Content-Type', 'application/json');
-  let data = {
-    message: 'Hello world, Woooooeeeee!!!!'
-  };
-  res.send(JSON.stringify(data, null, 2));
+  res.json({
+    message: 'Hello world, Woooooeeeee!!!!',
+  });
 });
 
-// All remaining requests return the React app, so it can handle routing.
-app.get('*', function(request, response) {
-  response.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
+// All remaining GET requests return the React app, so it can handle routing.
+// Express 5 needs a named wildcard (`/*splat`); `{/*splat}` also matches `/`.
+app.get('{/*splat}', (req, res) => {
+  res.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
 });
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+app.listen(PORT, HOST, () => {
+  console.log(`Running on http://${HOST}:${PORT}`);
+});

@@ -1,7 +1,7 @@
 {
   "name": "node-react-docker-compose",
   "version": "1.0.0",
-  "description": "A reference for running a node server and create-react-app app via docker-compose.",
+  "description": "A reference for running a Node server and a Vite React app via Docker Compose.",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
@@ -10,9 +10,9 @@
   "author": "Peter Coles",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^5.3.0"
   },
   "devDependencies": {
-    "nodemon": "^1.19.0"
+    "nodemon": "^3.1.14"
   }
 }
