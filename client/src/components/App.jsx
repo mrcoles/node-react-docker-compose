@@ -28,7 +28,7 @@ class App extends Component {
     try {
       data = JSON.parse(text); // cannot call both .json and .text - await resp.json();
     } catch (e) {
-      console.err(`Invalid json\n${e}`);
+      console.error(`Invalid json\n${e}`);
     }
 
     if (resp.status !== 200) {
@@ -46,7 +46,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          To get started, edit <code>src/components/App.jsx</code> and save to reload.
         </p>
         <p>{this.state.message || 'No message'}</p>
       </div>
